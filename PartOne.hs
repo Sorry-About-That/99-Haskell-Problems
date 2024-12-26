@@ -111,3 +111,46 @@ repli :: [a] -> Int -> [a]
 repli [] _     = []
 repli _  0     = []
 repli (x:xs) n = replicate n x ++ repli xs n  --(replicate :: Int -> a -> [a])
+
+-- Problem 16: Drop every nth element from a list 
+dropEvery :: [a] -> Int -> [a] 
+dropEvery ys n = [y | (y,idx) <- ys `zip` [1..length ys], idx `mod` n /= 0]
+
+-- Problem 17: Split a list into two parts; the length of the first part is given.
+split :: [a] -> Int -> ([a],[a])
+split xs n = (take n xs, drop n xs) 
+
+quicky = "abcdefghik" --testers 
+
+-- Problem 18: Extract a slice from a list. (ex: slice "abcdefghijk" 3 7 = "cdefg"). Start counting the elements w/ 1. 
+slice :: [a] -> Int -> Int -> [a] 
+slice xs i k = take (k - i + 1) ys -- (k-i+1) gives all values in between i and k.
+    where ys = drop (i-1) xs       -- removes all values up until the ith index. 
+
+-- Problem 19: Rotate a list n places to the left.
+-- ex(rotate "abcdefgh" 3 = "defghabc")
+-- ex(rotate "abcdefgh" (-2) = "ghabcdef")
+rotate :: [a] -> Int -> [a] 
+rotate xs n 
+    | n >= 0    = drop n xs ++ take n xs
+    | otherwise = drop firstSection xs ++ take firstSection xs 
+        where firstSection = length xs - negate n
+
+-- Problem 20: Remove the kth element from list. Return the element removed and the residue list. 
+removeAt :: Int -> [a] -> (a, [a]) 
+removeAt n xs = (xs !! (n-1), residue) 
+    where residue = take (n-1) xs ++ drop n xs 
+
+-- Problem 21: Insert an element at a given position into a list. (insertAt 'X' "abcd" 2 = "aXbcd")
+insertAt :: a -> [a] -> Int -> [a] 
+insertAt x xs n = take (n-1) xs ++ [x] ++ drop (n-1) xs
+
+-- Problem 22: Create a list containing all integers within a given range. 
+range :: Int -> Int -> [Int]
+range i k = [i..k] --This is boring, I'll write another
+
+range' :: Int -> Int -> [Int] 
+range' i k
+    | i > k     = []  -- (i == k, then range' i k = [i])
+    | otherwise = i : range' (i+1) k
+-- ^^ More fun
